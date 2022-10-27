@@ -1,0 +1,298 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: Arial;
+    }
+
+    a {
+        color: #192126;
+        list-style: none;
+        text-decoration: none;
+        -webkit-tap-highlight-color:transparent;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+    .nav {
+
+        height: 120px;
+        position: fixed;
+        bottom: 40px;
+        left: 0;
+        width: 92%;
+        border: 1px solid white;
+        border-radius: 100px;
+        background-color: black;
+        margin-left: 4%;
+
+    }
+
+    .nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        margin-top: 15px;
+        margin-right: 10px;
+    }
+
+    .nav li {
+        height: 90px;
+        text-align: center;
+        border: 1px solid black;
+        border-radius: 60px;
+        margin-left: 10px
+    }
+
+    .nav li a {
+        line-height: 90px;
+        display: block;
+        background-position: center 0;
+        background-repeat: no-repeat;
+        background-size: 0.3rem auto;
+        font-family: Arial;
+        font-weight: 600;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .flex {
+        display: flex;
+
+    }
+
+    .flex1 {
+        flex: 1;
+        background-color: black;
+    }
+
+    .flex1 a {
+        font-size: 40px;
+        font-weight: 600;
+        color: white;
+        outline: none;
+
+    }
+
+
+    .head_box {
+        width: 99%;
+        height: 150px;
+        border-bottom: 1px solid #948a8a;
+    }
+
+    .head_box div {
+        width: 33%;
+        height: 50;
+        float: left;
+
+    }
+	
+	.userName
+	{
+        width: 20%;
+        height: 50;
+        float: left;
+margin-left: 60px;
+    }
+
+
+    .back_box a {
+        font-size: 50px;
+        font-width: 200;
+        margin-left: 20px;
+        text-decoration: none;
+    }
+
+    #maxbox {
+        width: 98%;
+float: left;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+
+    #word {
+        width: 92%;
+        height: 300px;
+        border: 1px dashed #ccc;
+        margin: 0 auto 20px;
+    }
+
+    #box {
+        width: 70%;
+        height:300px;
+        float: left;
+        border: 1px solid #948a8a;
+        font-size: 50px;
+        border-radius: 80px;
+        text-indent: 30px;
+        line-height: 80px;
+        outline: none;
+    }
+
+
+#txtsender, #txtreceiver
+{        
+		width: 70%;
+        height:30px;
+        float: left;
+        border: 1px solid #948a8a;
+        font-size: 25px;
+        border-radius: 80px;
+        text-indent: 30px;
+        outline: none;
+}
+    #btn {
+        width: 250px;
+        height:100px;
+        float: right;
+        font-size: 40px;
+        border: 1px solid #bbf246;
+        border-radius:80px;
+        background-color: #bbf246;
+        outline: none;
+        font-family: Arial;
+        font-weight: 600;
+
+
+    }
+
+    .liant_box {
+        width: 92%;
+        height:100px;
+        margin: auto;
+        margin-top: 30px;
+        /*border: 1px solid red;*/
+
+    }
+
+    .back_but {
+        font-size: 50px;
+        margin-left: 20px;
+        line-height:140px;
+    }
+
+    .title_name {
+        font-size: 50px;
+        font-weight: 600;
+        text-align: center;
+        line-height: 140px;
+    }
+
+    .user_img {
+        width: 100px;
+        border-radius: 50%;
+        float: right;
+        margin-right: 30px;
+        margin-top: 20px;
+
+
+    }
+</style>
+<body>
+<div class="head_box">
+    <div>
+        <h1 class="title_name">Sample Chat</h1  >
+    </div>
+</div>
+<div class="userName">
+    <p>Sender</p><textarea name="" id="txtsender">Jerry</textarea>
+</div>
+<div class="userName"> <p>Receiver</p><textarea name="" id="txtreceiver">Tom</textarea>
+</div>
+<div id="maxbox">
+    <div id="word"></div>
+    <div class="liant_box">
+        <textarea name="" id="box"></textarea>
+        <input type="button" id="btn" value="Send">
+    </div>
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+var username = document.getElementById("txtsender").value
+var opUserName = document.getElementById("txtreceiver").value
+
+ function ajaxCall() {
+            $.ajax({
+                url: 'http://localhost:5050/api/Chat/getChats?senderName='+username+'&receiver='+opUserName,
+  		crossDomain: true,
+                type: "GET",
+                success: function (data) {                    
+                    
+					var oword = document.getElementById("word");
+					oword.innerHTML = ''					
+
+					data.forEach(eml=>{
+					
+								var odiv = document.createElement("div");
+								var op1 = document.createElement("p");
+								odiv.appendChild(op1);
+								oword.appendChild(odiv);
+
+								op1.style.border = "1px solid #ccc";
+								op1.style.borderRadius = "7px";
+								op1.style.maxWidth = "600px";
+								op1.style.minWidth = "100px";
+								op1.style.margin = "20px"
+								op1.style.fontSize = "40px"
+								op1.style.padding = "15px"
+								odiv.style.overflow = "hidden";
+								op1.innerHTML = eml.message;
+								if (eml.senderName==username)
+								{
+									op1.style.background = "#95ec69";
+									op1.style.float = "right";
+								}else {
+									op1.style.background = "pink";
+									op1.style.float = "left";
+								}
+								
+							});
+
+                },
+                error: function (error) {
+                    console.log(`Error ${error}`);
+                }
+            });
+        }
+
+var obox = document.getElementById("box");
+var obtn = document.getElementById("btn");
+
+
+
+ obtn.onclick = function () {
+ var message = {
+	  senderName: username,
+	  receiverName: opUserName,
+	  message: obox.value,
+	  chatTime: '2022-10-25T11:11:50.581Z'
+	}
+	$.ajax({
+		type: "POST",
+		crossDomain: true,
+		url: "http://localhost:5050/api/Chat/addchat",
+		data: JSON.stringify(message),
+		success: function (data) { },
+		contentType: 'application/json',
+		dataType: 'json'
+	})
+	obox.value='';
+ }
+		
+var myVar = setInterval(ajaxCall, 1500);
+ajaxCall();
+
+
+    
+</script>
+</html>
