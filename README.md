@@ -14,7 +14,9 @@ this is an introduction about this simplechat service and client application
 ### Service side
 - move workspace to complied output bin folder(where simpleChats.dll located)
 - dotnet simpleChats.dll --urls "http://0.0.0.0:5050"
-
+### Service in Swagger
+after servie running, it would launch a swagger page as API guide in following like:  
+http://localhost:5050/swagger/index.html
 
 ### Client side
 open 2 sampleA.html and sampleB.html locally with chrome browser. 
